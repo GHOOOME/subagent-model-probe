@@ -50,20 +50,51 @@ The real-world incident that produced this skill:
 
 ## Install
 
-Standard-library Python only — no dependencies.
+Standard-library Python only — no dependencies. Works with any agent that reads a `skills/`
+directory. Full per-agent instructions (Codex, Claude Code, Cursor, Gemini CLI, opencode, and a
+shared-canonical symlink setup for using several at once) are in **[INSTALL.md](INSTALL.md)**.
+
+Quick version for Codex:
 
 ```bash
 git clone https://github.com/GHOOOME/subagent-model-probe.git
 mkdir -p ~/.codex/skills/subagent-model-probe
-cp -R subagent-model-probe/SKILL.md \
-      subagent-model-probe/scripts \
-      subagent-model-probe/agents \
-      ~/.codex/skills/subagent-model-probe/
+cp -R subagent-model-probe/{SKILL.md,scripts,agents} ~/.codex/skills/subagent-model-probe/
 chmod +x ~/.codex/skills/subagent-model-probe/scripts/*.py
 ```
 
-The skill is picked up on the next turn. To install for a different agent that reads skills from a
-directory, copy the same three items into that skills directory instead.
+The skill is available on the next turn.
+
+## How it gets triggered
+
+The agent decides from the frontmatter `name` and `description` — that is what is visible before the
+skill loads, and the description is written to fire on "choosing models to spawn subagents" and on
+the two error strings. You can also invoke it explicitly by name.
+
+Because this skill only helps **before** a fan-out, it is worth making that a standing rule in your
+agent instructions, e.g.:
+
+> Before spawning subagents across models, load the `subagent-model-probe` skill and probe first.
+
+`agents/openai.yaml` sets `policy.allow_implicit_invocation: true`, so it is eligible for automatic
+selection. Set it to `false` if you would rather invoke it only deliberately.
+
+## It only gets faster
+
+The matrix is the point. Probing is a **one-time cost per model**, not a per-session ritual:
+
+| Situation | Probes needed |
+|---|---|
+| First fan-out, fresh account | one per candidate model |
+| Later fan-out, same models | **zero** — they are already verified |
+| A provider ships a new model revision | **one** — only the new id is untested |
+| A model previously refused | zero — it is settled for the account |
+
+Before each fan-out the agent asks the matrix; only `UNTESTED` or `STALE` models get probed. The
+cost trends to zero while correctness stays high.
+
+The memory lives at a **stable per-user path** (`~/.subagent-model-probe/capability-matrix.json`,
+override with `--store` or `SUBAGENT_PROBE_STORE`), so it persists across sessions and directories.
 
 ## Usage
 

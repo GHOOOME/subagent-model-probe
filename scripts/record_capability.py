@@ -11,6 +11,11 @@ from datetime import date, timedelta
 VALID = {"works", "no-capability", "metadata-error", "timeout", "other"}
 
 
+DEFAULT_STORE = os.path.expanduser(
+    os.environ.get("SUBAGENT_PROBE_STORE", "~/.subagent-model-probe/capability-matrix.json")
+)
+
+
 def _load(path):
     if not os.path.exists(path):
         return {}, None
@@ -33,6 +38,9 @@ def _load(path):
 
 
 def _save(path, data):
+    parent = os.path.dirname(os.path.abspath(path))
+    if parent:
+        os.makedirs(parent, exist_ok=True)
     with open(path, "w") as fh:
         json.dump(data, fh, indent=2)
 
@@ -65,8 +73,8 @@ def _show(data):
 def main():
     p = argparse.ArgumentParser(
         description="Record or display subagent model capability probes.")
-    p.add_argument("--store", default="./subagent-capability-matrix.json",
-                   help="Path to the JSON store (default: ./subagent-capability-matrix.json)")
+    p.add_argument("--store", default=DEFAULT_STORE,
+                   help=f"Path to the JSON store (default: {DEFAULT_STORE})")
     p.add_argument("--model", help="Model identifier to record")
     p.add_argument("--result", choices=sorted(VALID),
                    help="Capability probe result")

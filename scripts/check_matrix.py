@@ -20,11 +20,16 @@ def _load(store_path: str):
         sys.exit(2)
 
 
+DEFAULT_STORE = os.path.expanduser(
+    os.environ.get("SUBAGENT_PROBE_STORE", "~/.subagent-model-probe/capability-matrix.json")
+)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Check subagent capability matrix before fan-out."
     )
-    parser.add_argument("--store", default="./subagent-capability-matrix.json",
+    parser.add_argument("--store", default=DEFAULT_STORE,
                         help="Path to the JSON store")
     parser.add_argument("--max-age-days", type=int, default=90,
                         help="Max freshness window in days (default: 90)")

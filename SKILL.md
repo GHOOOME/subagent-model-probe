@@ -51,6 +51,20 @@ a probe, and never a justification to skip one.
    doing anything else with it. A probe you did not write down is a probe you did not run.
 5. **Only then fan out**, using models that returned a clean pass on the probe kind your task needs.
 
+**Steady state: probe only what is new.** The point of the matrix is that probing is a one-time
+cost per model, not a per-session ritual. Before a fan-out:
+
+1. Ask the matrix about the models you intend to use (`check_matrix.py --models ...`).
+2. Any model already verified `works` **and fresh** → reuse it. Do not re-probe.
+3. Any model that is `UNTESTED` or `STALE` → **that is the only thing you probe this session.**
+4. A model that returned `no-capability` is settled for the account — do not re-probe it to
+   "double-check".
+
+So the first fan-out in a fresh account costs N probes; every fan-out after that costs one probe per
+**newly seen** model, and zero otherwise. When a provider ships a new model revision, only that new
+id is untested — everything else is already known. That is the whole value: the cost trends to zero
+while the correctness stays high.
+
 Cost discipline: one probe per model per session. A confirmed
 `capabilities are not enabled` verdict is permanent for the session — do not retry it, and do not
 look for a client-side workaround, because there is none.
@@ -97,7 +111,10 @@ Rule: **record the probe kind with the result.** `capable` with no probe kind is
 
 ## Dated matrix format
 
-Keep one matrix per account/gateway, in your agent notes. Every row is either *verified* (has a
+Keep one matrix per account/gateway. The helper scripts default to a **stable per-user path**
+(`~/.subagent-model-probe/capability-matrix.json`, override with `--store` or the
+`SUBAGENT_PROBE_STORE` env var) so the memory survives across sessions and directories. Do not let
+it depend on the current working directory. Every row is either *verified* (has a
 date, a probe kind, and an evidence pointer) or explicitly labelled `hint`.
 
 ```markdown
