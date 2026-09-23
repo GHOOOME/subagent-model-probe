@@ -1,0 +1,5 @@
+interface:
+  display_name: "Subagent Model Probe"
+  short_description: "Probe models for subagent capability; never trust a cached list"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,62 @@
+{
+  "qwen3.8-flash": {
+    "result": "works",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "toy probe; glm-5.3+ds-v4-pro also passed real file-read probe"
+  },
+  "qwen3.8-max": {
+    "result": "works",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "toy probe; glm-5.3+ds-v4-pro also passed real file-read probe"
+  },
+  "glm-5.3": {
+    "result": "works",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "toy probe; glm-5.3+ds-v4-pro also passed real file-read probe"
+  },
+  "deepseek-v4-pro": {
+    "result": "works",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "toy probe; glm-5.3+ds-v4-pro also passed real file-read probe"
+  },
+  "deepseek-v4-flash": {
+    "result": "works",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "toy probe; glm-5.3+ds-v4-pro also passed real file-read probe"
+  },
+  "kimi-k2.7-code": {
+    "result": "no-capability",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "400 Agent capabilities are not enabled"
+  },
+  "kimi-k2.6": {
+    "result": "no-capability",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "400 Agent capabilities are not enabled"
+  },
+  "glm-5": {
+    "result": "no-capability",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "400 Agent capabilities are not enabled"
+  },
+  "deepseek-v3.2": {
+    "result": "no-capability",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "400 Agent capabilities are not enabled"
+  },
+  "MiniMax-M2.5": {
+    "result": "metadata-error",
+    "first_tested": "2026-09-23",
+    "last_tested": "2026-09-23",
+    "notes": "500 'agent_api_metadata'"
+  }
+}

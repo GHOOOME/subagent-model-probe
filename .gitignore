@@ -1,0 +1,14 @@
+# Local probe state — never commit your own matrix, it is account-specific
+matrix.json
+subagent-capability-matrix.json
+*.local.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
